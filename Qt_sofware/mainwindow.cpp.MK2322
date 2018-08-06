@@ -1,0 +1,156 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <QDebug>
+
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    serial_port=new QSerialPort();
+    /*---------------Setup serial port-----------------*/
+
+    QSerialPortInfo info("ttyACM0");
+
+
+    qDebug()<<"Serial number: "<< info.serialNumber();
+    qDebug()<< "Name: "<< info.portName();
+    qDebug()<< "Manufacturer: "<< info.manufacturer();
+    qDebug()<< "Busy: "<< info.isBusy();
+
+    serial_port->setPortName("ttyACM0");
+    serial_port->setBaudRate(QSerialPort::Baud9600,QSerialPort::AllDirections);
+    serial_port->setDataBits(QSerialPort::Data8);
+    serial_port->setStopBits(QSerialPort::OneStop);
+    serial_port->setFlowControl(QSerialPort::NoFlowControl);
+    serial_port->setParity(QSerialPort::NoParity);
+
+    if(serial_port->open(QIODevice::ReadWrite)){
+        qDebug().noquote()<<"Com opened successfully"<<endl;
+        if(serial_port->isWritable())
+        {
+          qDebug().noquote()<<"Com is writable now"<<endl;
+        }
+        if(serial_port->isReadable())
+        {
+            //read data here
+            qDebug().noquote()<<"Com is readable now"<<endl;
+         }
+        connect(serial_port,SIGNAL(readyRead()),this, SLOT(readSerialData()));
+
+
+
+
+
+    }
+    else{
+        qDebug().noquote()<<"Can't open Com\n";
+    }
+
+
+
+
+    /*---------------Setup Plot-----------------*/
+    //configure the settings of window
+    setGeometry(400, 250, 600,450);
+
+    //configure the plot
+    setupSerialPlot(ui->serialPlot);
+
+    //refresh window
+    setWindowTitle("Serial data plot");
+    statusBar()->clearMessage();
+
+}
+
+void MainWindow::readSerialData()
+{
+    char c;
+
+    if(serial_port->bytesAvailable()>0)
+    {
+       serial_port->read(&c,4);
+
+
+       qDebug()<<"ADC: "<<(unsigned char)c<<"voltage: "<<voltage<<endl;
+       printf("-----ADC:%d, voltage: %2f\n",(unsigned char)c, voltage);
+    }
+    else{
+        qDebug()<<"Bytes not available"<<endl;
+    }
+
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+void MainWindow::setupSerialPlot(QCustomPlot *SerialPlot)
+{
+    //create graph sheet
+    SerialPlot->addGraph();
+    //set plot curve color
+    SerialPlot->graph(0)->setPen(QPen(QColor(100,50,0)));
+    // configure coordinate settings
+    SerialPlot->yAxis->setRange(0,5);
+    SerialPlot->yAxis->setLabel("Voltage (V)");
+    SerialPlot->xAxis->setLabel("Time");
+
+    //configure data format
+    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+    timeTicker->setTimeFormat("%h:%m:%s");
+    SerialPlot->xAxis->setTicker(timeTicker);
+    SerialPlot->axisRect()->setupFullAxesBox();
+    connect(SerialPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), SerialPlot->xAxis2, SLOT(setRange(QCPRange)));
+    connect(SerialPlot->yAxis, SIGNAL(rangeChanged(QCPRange)), SerialPlot->yAxis2, SLOT(setRange(QCPRange)));
+
+    //setup timer to  refresh graph
+    connect(&timer,SIGNAL(timeout()),this,SLOT(updatePlotData()));
+
+    timer.start(0);
+
+}
+
+void MainWindow::updatePlotData()
+{
+
+    static QTime time(QTime::currentTime());
+    // calculate two new data points:
+    double key = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
+    static double lastPointKey = 0;
+    if (key-lastPointKey > 0.002) // at most add point every 2 ms
+    {
+      // add data to lines:
+      ui->serialPlot->graph(0)->addData(key, qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843));
+
+      // rescale value (vertical) axis to fit the current data:
+      //ui->customPlot->graph(0)->rescaleValueAxis();
+      //ui->customPlot->graph(1)->rescaleValueAxis(true);
+      lastPointKey = key;
+    }
+    // make key axis range scroll with the data (at a constant range size of 8):
+    ui->serialPlot->xAxis->setRange(key, 8, Qt::AlignRight);
+    ui->serialPlot->replot();
+
+    // calculate frames per second:
+    static double lastFpsKey;
+    static int frameCount;
+    ++frameCount;
+    if (key-lastFpsKey > 2) // average fps over 2 seconds
+    {
+      ui->statusBar->showMessage(
+            QString("%1 FPS, Total Data points: %2")
+            .arg(frameCount/(key-lastFpsKey), 0, 'f', 0)
+            .arg(ui->serialPlot->graph(0)->data()->size())
+            , 0);
+      lastFpsKey = key;
+      frameCount = 0;
+    }
+
+}
