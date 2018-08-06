@@ -30,7 +30,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setupSerialPlot(QCustomPlot *SerialPlot); //the function to setup the plot setting
-    int Xrange;
+    double Xrange;
     unsigned char Used_ADC_CH;
     double sampling_time;
     unsigned char channel_index;  //ADC channel index
@@ -51,13 +51,9 @@ private slots:
 
     void on_MinVoltEdit_textEdited(const QString &arg1);
 
-    void on_TimePeriodSlider_valueChanged(int value);
-
     void on_TimeRangespinBox_valueChanged(int arg1);
 
     void on_SerialConnectButton_clicked();
-
-    void on_ADCCHspinBox_valueChanged(int arg1);
 
     void on_SamplingTimeEdit_textChanged(const QString &arg1);
 
@@ -68,17 +64,24 @@ private slots:
     void on_checkBox_CH2_clicked(bool checked);
 	
 
+    void on_VoltPositionSlider_valueChanged(int value);
+
+    void on_TimePositionSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;   
     QTimer timer;
     QElapsedTimer time; //it has nanosecond precision
     //    QTime time;
-    double key;//current time
-    double lastPointKey; //previous time
+    double key;//current time in s
+    double lastPointKey; //previous time in s
     QSerialPort *serial_port;
     bool is_SerialOn;
     bool is_SerialConnected;
     CHState ADC_CH_state[ADC_Channel_Num];
+    float maxVolt;
+    float minVolt;
+    float graph_pos;
 };
 
 #endif // MAINWINDOW_H

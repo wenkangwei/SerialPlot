@@ -18,9 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_index=0;            //index used to iterate each ADC Channel
     key=0;                      // the value of the moment when voltage sampling occurs
     lastPointKey=0;
-    Xrange=20;                 //the range of X-Axis in graph
-    sampling_time=0.001;       //in ms
+    Xrange=20.0;                //the range of X-Axis in graph
+    sampling_time=0.001;        //in ms
 
+    maxVolt=5.0;                //set maxVolt displayed on graph to 5V, minVolt to 0V
+    minVolt=0;
     //initialize states of ADC channels and add graph
     for(int i=0; i < ADC_Channel_Num;i++){
 	ADC_CH_state[i].is_enabled= false;
@@ -87,7 +89,7 @@ void MainWindow::readVoltage()
 
        //get the ADC channel number
        if((ADC_Channel=getADCChannel(ADC_value))>-1 && ADC_Channel< ADC_Channel_Num){
-	//read ADC data if the channel is enabled
+            //read ADC data if the channel is enabled
            if(ADC_CH_state[ADC_Channel].is_enabled == true){
             //read ADC value
             ADC_value=SerialBuffer.at(index);
@@ -166,19 +168,20 @@ void MainWindow::setupSerialPlot(QCustomPlot *SerialPlot)
     //set legend
     SerialPlot->legend->setVisible(true);
     // configure coordinate settings
-    SerialPlot->yAxis->setRange(-0.5,6);
+    SerialPlot->yAxis->setRange(0,5);
     SerialPlot->yAxis->setLabel("Voltage (V)");
     SerialPlot->xAxis->setLabel("Time(min:s:ms)");
 
     //Initialize display style of the graph
     QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
-    timeTicker->setTimeFormat("%m:%s:%z");
+    timeTicker->setTimeFormat("%h:%m:%s:%z");
     SerialPlot->xAxis->setTicks(true);
     timeTicker->setTickCount(5);
     SerialPlot->xAxis->setTicker(timeTicker);
     SerialPlot->axisRect()->setupFullAxesBox();
     ui->serialPlot->xAxis->setRange(0, Xrange, Qt::AlignLeft);
     ui->serialPlot->replot();
+
     //setup signal connection
     connect(SerialPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), SerialPlot->xAxis2, SLOT(setRange(QCPRange)));
     connect(SerialPlot->yAxis, SIGNAL(rangeChanged(QCPRange)), SerialPlot->yAxis2, SLOT(setRange(QCPRange)));
@@ -194,12 +197,11 @@ void MainWindow::setupSerialPlot(QCustomPlot *SerialPlot)
  * */
 void MainWindow::updatePlotData()
 {
-    // calculate frames per second:
     static double lastFpsKey;
     static int frameCount;
-
+    static double cleanData_timer = time.elapsed()/1000.0;
     key=time.elapsed()/1000.0;   //in s
-    ui->serialPlot->xAxis->setLabel("Time:"+ QTime::currentTime().toString("m:s:z"));
+    ui->serialPlot->xAxis->setLabel("Time(h:m:s:ms):"+ QTime::currentTime().toString("h:m:s:z"));
     //replot data set each 1ms
     if (key-lastPointKey > 0.001)
     {
@@ -213,6 +215,7 @@ void MainWindow::updatePlotData()
      }
 
     //FPS calculation
+    // calculate frames per second:
     ++frameCount;
     if (key-lastFpsKey > 2) // average fps over 2 seconds
     {
@@ -225,6 +228,15 @@ void MainWindow::updatePlotData()
       frameCount = 0;
     }
 
+    //clean data each 1 minute
+    if(time.elapsed()/1000.0 - cleanData_timer >=60.0){
+        double sorted_key = ui->serialPlot->xAxis->range().lower;
+        //clean the data before the lower boundary along time axis
+        for(int channel_index=0;channel_index<ADC_Channel_Num; channel_index++){
+        ui->serialPlot->graph(ADC_CH_state[channel_index].graph_index)->data()->removeBefore(sorted_key);
+        }
+        cleanData_timer = time.elapsed()/1000.0;
+    }
 }
 
 /**
@@ -347,7 +359,11 @@ void MainWindow::on_QuitButton_clicked()
  **/
 void MainWindow::on_MaxVoltEdit_textEdited(const QString &arg1)
 {
-    ui->serialPlot->yAxis->setRangeUpper(arg1.toDouble());
+    maxVolt =arg1.toFloat();
+    //update range of y axis
+    ui->serialPlot->yAxis->setRangeUpper(maxVolt);
+    //update the position along y axis
+    graph_pos = (maxVolt+minVolt)/2.0;
 }
 
 /**
@@ -356,20 +372,14 @@ void MainWindow::on_MaxVoltEdit_textEdited(const QString &arg1)
  **/
 void MainWindow::on_MinVoltEdit_textEdited(const QString &arg1)
 {
-    ui->serialPlot->yAxis->setRangeLower(arg1.toDouble());
-
+    minVolt = arg1.toFloat();
+    //update range of y axis
+    ui->serialPlot->yAxis->setRangeLower(minVolt);
+    //update the position along y axis
+    graph_pos = (maxVolt+minVolt)/2.0;
 }
 
 
-/**
- *@brief on_TimeRangespinBox_valueChanged
- * 	Action to set the period in graph
- **/
-void MainWindow::on_TimePeriodSlider_valueChanged(int value)
-{
-    ui->serialPlot->yAxis->setNumberFormat("f");
-    ui->serialPlot->yAxis->setNumberPrecision(value);
-}
 
 
 /**
@@ -378,7 +388,9 @@ void MainWindow::on_TimePeriodSlider_valueChanged(int value)
  **/
 void MainWindow::on_TimeRangespinBox_valueChanged(int arg1)
 {
-    if(arg1>0) Xrange=arg1;
+    if(arg1>0) Xrange=(double)arg1/1000.0;//convert ms to s
+    ui->serialPlot->xAxis->setRange(key, Xrange, Qt::AlignRight);
+    ui->serialPlot->replot();
 }
 
 
@@ -393,12 +405,14 @@ void MainWindow::on_TimeRangespinBox_valueChanged(int arg1)
 void MainWindow::PlotChannel_Controller(int channel_index, bool checked){
     int graph_index  =ADC_CH_state[channel_index].graph_index;
 	if(checked == true){
-	    //update state
+        //update state and enable graph
 	    ADC_CH_state[channel_index].is_enabled = true;
+         ui->serialPlot->graph(graph_index)->setVisible(true);
 	}
 	else{
         if(graph_index!=-1){
-            ui->serialPlot->graph(graph_index)->data()->clear();//clear graph data
+            //disable graph
+            ui->serialPlot->graph(graph_index)->setVisible(false);
         }
         else{
             qDebug()<<"No graph needed clearing "<<endl;
@@ -465,7 +479,34 @@ void MainWindow::on_checkBox_CH2_clicked(bool checked)
 
 
 
-void MainWindow::on_ADCCHspinBox_valueChanged(int arg1){
 
 
+/**
+ *@brief on_VoltPositionSlider_valueChanged
+ * 	Action to move the position of the graph
+ **/
+void MainWindow::on_VoltPositionSlider_valueChanged(int value)
+{
+    float maxScale=(float) ui->VoltPositionSlider->maximum();
+    //reset and update position of the graph
+    ui->serialPlot->yAxis->setRange(minVolt,maxVolt);
+    ui->serialPlot->yAxis->moveRange((double)((float)value/maxScale)*(maxVolt -minVolt));
+    ui->serialPlot->replot();
+}
+
+/**
+ *@brief on_TimePositionSlider_valueChanged
+ * 	Action to move the graph along x axis, which allows users to revisit
+ *  the previous waveform
+ **/
+void MainWindow::on_TimePositionSlider_valueChanged(int value)
+{
+    //find the first data point in the data queue
+    double front_key= ui->serialPlot->graph(0)->data()->begin()->key;
+     //calculate the key for display
+     double rear_key = key;
+     //update and refresh graph
+     double new_position=((float)value/(float)ui->TimePositionSlider->maximum())*(rear_key - front_key) + front_key;
+     ui->serialPlot->xAxis->setRange(new_position,Xrange,Qt::AlignLeft);
+     ui->serialPlot->replot();
 }

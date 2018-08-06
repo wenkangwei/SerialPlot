@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.1, 2018-08-05T14:07:53. -->
+<!-- Written by QtCreator 3.5.1, 2018-08-05T23:08:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -239,8 +239,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">SerialPlot</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/free/MyProjects/QtProjects/SerialPlot/SerialPlot.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">SerialPlot2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/free/MyProjects/QtProjects/SerialPlot_Prj/Qt_sofware/SerialPlot.pro</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">SerialPlot.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
@@ -432,14 +432,14 @@
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
        <value type="QString">~/QtProj/build-SerialPlot-RaspberryPi_3-Debug</value>
-       <value type="QString">/home/pi/SerialPlot</value>
-       <value type="QString">/home/pi</value>
+       <value type="QString">/home/pi/Qt-Debug/SerialPlot</value>
+       <value type="QString">~/</value>
        <value type="QString">~/Raspberrypi</value>
        <value type="QString">~/QtProj/build-SerialPlot-RaspberryPi_3-Debug</value>
-       <value type="QString">/home/pi/Qt-Debug/Debug-SerialPlot</value>
+       <value type="QString">/home/pi/SerialPlot</value>
+       <value type="QString">/home/pi</value>
        <value type="QString">/home/pi/</value>
-       <value type="QString">~/</value>
-       <value type="QString">/home/pi/Qt-Debug/SerialPlot</value>
+       <value type="QString">/home/pi/Qt-Debug/Debug-SerialPlot</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedSysroots">
        <value type="QString">/opt/qtrpi/raspbian/sysroot</value>
@@ -454,14 +454,14 @@
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2018-03-18T15:01:44</value>
-       <value type="QDateTime">2018-03-18T15:20:25</value>
-       <value type="QDateTime">2018-03-18T15:08:41</value>
+       <value type="QDateTime">2018-03-18T15:26:40</value>
+       <value type="QDateTime">2018-03-18T15:04:12</value>
        <value type="QDateTime">2018-03-17T22:36:33</value>
        <value type="QDateTime">2018-03-17T22:44:22</value>
-       <value type="QDateTime">2018-03-18T15:32:23</value>
+       <value type="QDateTime">2018-03-18T15:20:25</value>
+       <value type="QDateTime">2018-03-18T15:08:41</value>
        <value type="QDateTime">2018-03-18T15:22:26</value>
-       <value type="QDateTime">2018-03-18T15:04:12</value>
-       <value type="QDateTime">2018-03-18T15:26:40</value>
+       <value type="QDateTime">2018-03-18T15:32:23</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
