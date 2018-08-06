@@ -482,31 +482,30 @@ void MainWindow::on_checkBox_CH2_clicked(bool checked)
 
 
 /**
- *@brief on_VoltPositionSlider_valueChanged
+ *@brief on_YPositionSlider_valueChanged
  * 	Action to move the position of the graph
  **/
-void MainWindow::on_VoltPositionSlider_valueChanged(int value)
+void MainWindow::on_YPositionSlider_valueChanged(int value)
 {
-    float maxScale=(float) ui->VoltPositionSlider->maximum();
+    float maxScale=(float) ui->YPositionSlider->maximum();
     //reset and update position of the graph
     ui->serialPlot->yAxis->setRange(minVolt,maxVolt);
     ui->serialPlot->yAxis->moveRange((double)((float)value/maxScale)*(maxVolt -minVolt));
     ui->serialPlot->replot();
 }
-
 /**
- *@brief on_TimePositionSlider_valueChanged
+ *@brief on_XPositionSlider_valueChanged
  * 	Action to move the graph along x axis, which allows users to revisit
  *  the previous waveform
  **/
-void MainWindow::on_TimePositionSlider_valueChanged(int value)
+void MainWindow::on_XPositionSlider_valueChanged(int value)
 {
     //find the first data point in the data queue
     double front_key= ui->serialPlot->graph(0)->data()->begin()->key;
      //calculate the key for display
      double rear_key = key;
      //update and refresh graph
-     double new_position=((float)value/(float)ui->TimePositionSlider->maximum())*(rear_key - front_key) + front_key;
+     double new_position=((float)value/(float)ui->XPositionSlider->maximum())*(rear_key - front_key) + front_key;
      ui->serialPlot->xAxis->setRange(new_position,Xrange,Qt::AlignLeft);
      ui->serialPlot->replot();
 }

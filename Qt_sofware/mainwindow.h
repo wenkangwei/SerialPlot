@@ -64,9 +64,9 @@ private slots:
     void on_checkBox_CH2_clicked(bool checked);
 	
 
-    void on_VoltPositionSlider_valueChanged(int value);
+    void on_YPositionSlider_valueChanged(int value);
 
-    void on_TimePositionSlider_valueChanged(int value);
+    void on_XPositionSlider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;   

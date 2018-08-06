@@ -375,7 +375,7 @@
             <string>Move YPos</string>
            </property>
           </widget>
-          <widget class="QSlider" name="VoltPositionSlider">
+          <widget class="QSlider" name="YPositionSlider">
            <property name="geometry">
             <rect>
              <x>110</x>
@@ -425,7 +425,7 @@
             <string>Move XPos</string>
            </property>
           </widget>
-          <widget class="QSlider" name="TimePositionSlider">
+          <widget class="QSlider" name="XPositionSlider">
            <property name="geometry">
             <rect>
              <x>110</x>
