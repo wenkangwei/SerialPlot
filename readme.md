@@ -17,12 +17,11 @@ In Qt GUI application, its functions are following:
 <li>ADC channel selection</li>
 <li>Sample time selection</li>
 <li>Axes range changing</li>
-<li>Waveform review</li>
-<li></li>
+<li>Waveform review<br>
+Note: this  application is based on Linux platform.</li>
 </ul>
 </li>
 </ul>
-<p>Note: this  application is based on Linux platform.</p>
 <h2 id="setup">2. Setup</h2>
 <h3 id="hardware-setup">2.1 Hardware setup</h3>
 <p>In this project, I simply use an Arduino board as  the hardware device to measure the analog signal. The following is a very simple image for hardware setup:<br>
