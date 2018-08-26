@@ -53,7 +53,7 @@ The following images show a test that when I use my finger to hold the measureme
 <li>The function of reviewing the previous waveform can be updated by dragging the graph instead of using 2 slider bars.</li>
 <li>The real-time property can be improved by updating the hardware program or using more advanced devices.</li>
 <li>Sampling method can be extended. Trigger mode, real-time sampling, equivalent-time sampling can be added.</li>
-<li>more<br>
-If you are interested in this or want to improve my program, please feel free to commit in this project or contact me by email: <a href="mailto:wenkanw@g.clemson.edu">wenkanw@g.clemson.edu</a></li>
+<li>more . . .</li>
 </ol>
+<p>If you are interested in this or want to improve my program, please feel free to commit in this project or contact me by email: <a href="mailto:wenkanw@g.clemson.edu">wenkanw@g.clemson.edu</a></p>
 
