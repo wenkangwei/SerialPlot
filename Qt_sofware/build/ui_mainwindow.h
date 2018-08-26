@@ -14,7 +14,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -43,6 +42,7 @@ public:
     QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout_2;
+    QGroupBox *groupBox_3;
     QPushButton *SerialConnectButton;
     QPushButton *SerialRunButton;
     QPushButton *QuitButton;
@@ -52,20 +52,20 @@ public:
     QCheckBox *checkBox_CH0;
     QCheckBox *checkBox_CH1;
     QCheckBox *checkBox_CH2;
-    QFormLayout *formLayout;
+    QVBoxLayout *verticalLayout_5;
     QGroupBox *groupBox;
     QLabel *label;
     QLineEdit *MaxVoltEdit;
     QLabel *label_2;
     QLineEdit *MinVoltEdit;
+    QLabel *label_4;
+    QSlider *YPositionSlider;
     QLabel *label_6;
-    QSpinBox *ADCCHspinBox;
+    QSlider *XPositionSlider;
     QVBoxLayout *verticalLayout_4;
     QGroupBox *groupBox_2;
-    QLabel *label_4;
     QLabel *label_5;
     QLabel *label_3;
-    QSlider *TimePeriodSlider;
     QSpinBox *TimeRangespinBox;
     QLineEdit *SamplingTimeEdit;
     QMenuBar *menuBar;
@@ -76,9 +76,9 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(931, 584);
+        MainWindow->resize(1281, 627);
         MainWindow->setMinimumSize(QSize(794, 584));
-        MainWindow->setMaximumSize(QSize(1461, 703));
+        MainWindow->setMaximumSize(QSize(1281, 627));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -102,7 +102,7 @@ public:
 
         verticalLayout->addWidget(serialPlot);
 
-        verticalSpacer_2 = new QSpacerItem(10, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_2);
 
@@ -112,20 +112,24 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        SerialConnectButton = new QPushButton(centralWidget);
+        groupBox_3 = new QGroupBox(centralWidget);
+        groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
+        groupBox_3->setMinimumSize(QSize(91, 111));
+        groupBox_3->setMaximumSize(QSize(91, 111));
+        SerialConnectButton = new QPushButton(groupBox_3);
         SerialConnectButton->setObjectName(QStringLiteral("SerialConnectButton"));
-
-        verticalLayout_2->addWidget(SerialConnectButton);
-
-        SerialRunButton = new QPushButton(centralWidget);
+        SerialConnectButton->setGeometry(QRect(0, 20, 85, 27));
+        SerialConnectButton->setMaximumSize(QSize(85, 16777215));
+        SerialRunButton = new QPushButton(groupBox_3);
         SerialRunButton->setObjectName(QStringLiteral("SerialRunButton"));
-
-        verticalLayout_2->addWidget(SerialRunButton);
-
-        QuitButton = new QPushButton(centralWidget);
+        SerialRunButton->setGeometry(QRect(0, 50, 85, 27));
+        SerialRunButton->setMaximumSize(QSize(85, 16777215));
+        QuitButton = new QPushButton(groupBox_3);
         QuitButton->setObjectName(QStringLiteral("QuitButton"));
+        QuitButton->setGeometry(QRect(0, 80, 85, 27));
+        QuitButton->setMaximumSize(QSize(85, 16777215));
 
-        verticalLayout_2->addWidget(QuitButton);
+        verticalLayout_2->addWidget(groupBox_3);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -140,6 +144,7 @@ public:
         ADC_CH_groupBox = new QGroupBox(centralWidget);
         ADC_CH_groupBox->setObjectName(QStringLiteral("ADC_CH_groupBox"));
         ADC_CH_groupBox->setMinimumSize(QSize(101, 111));
+        ADC_CH_groupBox->setMaximumSize(QSize(101, 161));
         checkBox_CH0 = new QCheckBox(ADC_CH_groupBox);
         checkBox_CH0->setObjectName(QStringLiteral("checkBox_CH0"));
         checkBox_CH0->setGeometry(QRect(0, 20, 97, 22));
@@ -155,12 +160,13 @@ public:
 
         horizontalLayout->addLayout(verticalLayout_3);
 
-        formLayout = new QFormLayout();
-        formLayout->setSpacing(6);
-        formLayout->setObjectName(QStringLiteral("formLayout"));
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setMinimumSize(QSize(291, 141));
+        groupBox->setMinimumSize(QSize(291, 161));
+        groupBox->setMaximumSize(QSize(16777215, 161));
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 30, 85, 27));
@@ -179,29 +185,35 @@ public:
         MinVoltEdit->setGeometry(QRect(110, 60, 174, 27));
         MinVoltEdit->setMinimumSize(QSize(174, 27));
         MinVoltEdit->setMaximumSize(QSize(174, 27));
+        label_4 = new QLabel(groupBox);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setGeometry(QRect(10, 90, 86, 29));
+        label_4->setMinimumSize(QSize(86, 29));
+        YPositionSlider = new QSlider(groupBox);
+        YPositionSlider->setObjectName(QStringLiteral("YPositionSlider"));
+        YPositionSlider->setGeometry(QRect(110, 90, 169, 29));
+        YPositionSlider->setMinimumSize(QSize(169, 29));
+        YPositionSlider->setMinimum(-100);
+        YPositionSlider->setMaximum(100);
+        YPositionSlider->setValue(0);
+        YPositionSlider->setSliderPosition(0);
+        YPositionSlider->setOrientation(Qt::Horizontal);
         label_6 = new QLabel(groupBox);
         label_6->setObjectName(QStringLiteral("label_6"));
-        label_6->setGeometry(QRect(7, 90, 93, 27));
-        label_6->setMinimumSize(QSize(93, 27));
-        ADCCHspinBox = new QSpinBox(groupBox);
-        ADCCHspinBox->setObjectName(QStringLiteral("ADCCHspinBox"));
-        ADCCHspinBox->setGeometry(QRect(110, 95, 174, 27));
-        ADCCHspinBox->setMinimumSize(QSize(174, 27));
-        ADCCHspinBox->setMaximumSize(QSize(174, 27));
-        ADCCHspinBox->setMinimum(1);
-        ADCCHspinBox->setMaximum(3);
-        label->raise();
-        MaxVoltEdit->raise();
-        label_2->raise();
-        MinVoltEdit->raise();
-        label_6->raise();
-        ADCCHspinBox->raise();
-        serialPlot->raise();
+        label_6->setGeometry(QRect(10, 120, 86, 29));
+        label_6->setMinimumSize(QSize(86, 29));
+        XPositionSlider = new QSlider(groupBox);
+        XPositionSlider->setObjectName(QStringLiteral("XPositionSlider"));
+        XPositionSlider->setGeometry(QRect(110, 120, 171, 29));
+        XPositionSlider->setMinimumSize(QSize(171, 29));
+        XPositionSlider->setMaximum(100);
+        XPositionSlider->setValue(100);
+        XPositionSlider->setOrientation(Qt::Horizontal);
 
-        formLayout->setWidget(0, QFormLayout::FieldRole, groupBox);
+        verticalLayout_5->addWidget(groupBox);
 
 
-        horizontalLayout->addLayout(formLayout);
+        horizontalLayout->addLayout(verticalLayout_5);
 
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setSpacing(6);
@@ -209,34 +221,24 @@ public:
         groupBox_2 = new QGroupBox(centralWidget);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
         groupBox_2->setMinimumSize(QSize(271, 121));
-        label_4 = new QLabel(groupBox_2);
-        label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setGeometry(QRect(0, 20, 86, 29));
-        label_4->setMinimumSize(QSize(86, 29));
         label_5 = new QLabel(groupBox_2);
         label_5->setObjectName(QStringLiteral("label_5"));
-        label_5->setGeometry(QRect(0, 50, 84, 27));
+        label_5->setGeometry(QRect(10, 30, 84, 27));
         label_5->setMinimumSize(QSize(84, 27));
         label_3 = new QLabel(groupBox_2);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(0, 80, 98, 27));
+        label_3->setGeometry(QRect(0, 60, 98, 27));
         label_3->setMinimumSize(QSize(98, 27));
-        TimePeriodSlider = new QSlider(groupBox_2);
-        TimePeriodSlider->setObjectName(QStringLiteral("TimePeriodSlider"));
-        TimePeriodSlider->setGeometry(QRect(100, 20, 169, 29));
-        TimePeriodSlider->setMinimumSize(QSize(169, 29));
-        TimePeriodSlider->setMaximumSize(QSize(169, 29));
-        TimePeriodSlider->setOrientation(Qt::Horizontal);
         TimeRangespinBox = new QSpinBox(groupBox_2);
         TimeRangespinBox->setObjectName(QStringLiteral("TimeRangespinBox"));
-        TimeRangespinBox->setGeometry(QRect(100, 50, 169, 27));
+        TimeRangespinBox->setGeometry(QRect(100, 30, 169, 27));
         TimeRangespinBox->setMinimumSize(QSize(169, 27));
         TimeRangespinBox->setMaximumSize(QSize(169, 27));
         TimeRangespinBox->setMinimum(1);
-        TimeRangespinBox->setMaximum(100);
+        TimeRangespinBox->setMaximum(60000);
         SamplingTimeEdit = new QLineEdit(groupBox_2);
         SamplingTimeEdit->setObjectName(QStringLiteral("SamplingTimeEdit"));
-        SamplingTimeEdit->setGeometry(QRect(100, 80, 169, 27));
+        SamplingTimeEdit->setGeometry(QRect(100, 60, 169, 27));
         SamplingTimeEdit->setMinimumSize(QSize(169, 27));
         SamplingTimeEdit->setMaximumSize(QSize(169, 27));
 
@@ -251,7 +253,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 931, 25));
+        menuBar->setGeometry(QRect(0, 0, 1281, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -268,10 +270,11 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        groupBox_3->setTitle(QApplication::translate("MainWindow", "Start", 0));
         SerialConnectButton->setText(QApplication::translate("MainWindow", "Connect", 0));
         SerialRunButton->setText(QApplication::translate("MainWindow", "Run", 0));
         QuitButton->setText(QApplication::translate("MainWindow", "Quit", 0));
-        ADC_CH_groupBox->setTitle(QApplication::translate("MainWindow", "ADC Channels", 0));
+        ADC_CH_groupBox->setTitle(QApplication::translate("MainWindow", "Channels", 0));
         checkBox_CH0->setText(QApplication::translate("MainWindow", "CH0", 0));
         checkBox_CH1->setText(QApplication::translate("MainWindow", "CH1", 0));
         checkBox_CH2->setText(QApplication::translate("MainWindow", "CH2", 0));
@@ -283,13 +286,13 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "Min Voltage", 0));
         MinVoltEdit->setText(QString());
         MinVoltEdit->setPlaceholderText(QApplication::translate("MainWindow", "V", 0));
-        label_6->setText(QApplication::translate("MainWindow", "ADC Channel:", 0));
+        label_4->setText(QApplication::translate("MainWindow", "Move YPos", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Move XPos", 0));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "Sampling Settings", 0));
-        label_4->setText(QApplication::translate("MainWindow", "Time period:", 0));
-        label_5->setText(QApplication::translate("MainWindow", "Time range: ", 0));
-        label_3->setText(QApplication::translate("MainWindow", "Sampling time", 0));
+        label_5->setText(QApplication::translate("MainWindow", "Interval(ms):", 0));
+        label_3->setText(QApplication::translate("MainWindow", "Sample speed", 0));
         SamplingTimeEdit->setText(QString());
-        SamplingTimeEdit->setPlaceholderText(QApplication::translate("MainWindow", "ms", 0));
+        SamplingTimeEdit->setPlaceholderText(QApplication::translate("MainWindow", "sampling in ms", 0));
     } // retranslateUi
 
 };

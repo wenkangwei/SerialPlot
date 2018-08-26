@@ -493,6 +493,7 @@ void MainWindow::on_YPositionSlider_valueChanged(int value)
     ui->serialPlot->yAxis->moveRange((double)((float)value/maxScale)*(maxVolt -minVolt));
     ui->serialPlot->replot();
 }
+
 /**
  *@brief on_XPositionSlider_valueChanged
  * 	Action to move the graph along x axis, which allows users to revisit
