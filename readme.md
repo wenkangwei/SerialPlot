@@ -4,7 +4,7 @@
 ---
 
 <h1 id="serial-plot">Serial Plot</h1>
-<h2 id="introduction">1. Introduction</h2>
+<h2 id="introduction">1. Introduction  <a href="https://youtu.be/XiztBBY-jrM">Video Demo here</a></h2>
 <ul>
 <li>
 <h3 id="purpose">Purpose</h3>
